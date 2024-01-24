@@ -9,10 +9,10 @@ CLASS z2ui5_cl_mime_app DEFINITION
     DATA check_initialized TYPE abap_bool.
     DATA classname TYPE string VALUE `zcl_mime_cloud_test`.
     DATA type TYPE string VALUE `javascript`.
-    DATA methodname TYPE string VALUE 'z2ui5_if_mime~container'.
+    DATA methodname TYPE string VALUE 'z2ui5_if_mime_container~container'.
     DATA file TYPE string.
-    DATA mt_type_help TYPE z2ui5_cl_mime_utility=>ty_t_name_val.
-    DATA mt_class_help TYPE z2ui5_cl_mime_utility=>ty_t_name_val.
+    DATA mt_type_help TYPE z2ui5_if_client=>ty_t_name_value.
+    DATA mt_class_help TYPE z2ui5_if_client=>ty_t_name_value.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -27,8 +27,8 @@ CLASS z2ui5_cl_mime_app IMPLEMENTATION.
     IF check_initialized = abap_false.
       check_initialized = abap_true.
 
-      mt_type_help = z2ui5_cl_mime_utility=>get_file_types( ).
-      mt_class_help = z2ui5_cl_mime_utility=>get_classes_impl_intf( |Z2UI5_IF_MIME_CONTAINER| ).
+      mt_type_help = VALUE #( FOR row IN z2ui5_cl_util_func=>get_file_types( ) ( n = to_upper( shift_right( shift_left( row ) ) )  v = shift_right( shift_left( row ) ) ) ).
+      mt_class_help = VALUE #( FOR row IN z2ui5_cl_util_func=>rtti_get_classes_impl_intf( |Z2UI5_IF_MIME_CONTAINER| ) ( n = row v = row ) ).
       classname = VALUE #( mt_class_help[ 1 ]-n OPTIONAL ).
 
       DATA(view) = z2ui5_cl_xml_view=>factory( ).
@@ -101,7 +101,13 @@ CLASS z2ui5_cl_mime_app IMPLEMENTATION.
     CASE client->get( )-event.
 
       WHEN 'ON_LOAD'.
-        file = z2ui5_cl_mime_utility=>get_method_source_code( class = classname method = methodname ).
+
+        DATA(lt_source) = z2ui5_cl_util_func=>source_code_get_method(
+          iv_classname  = classname
+          iv_methodname = methodname ).
+
+        file = z2ui5_cl_util_func=>source_method_to_file( lt_source ).
+
         client->view_model_update( ).
         client->message_toast_display( |File loaded| ).
 
@@ -111,5 +117,4 @@ CLASS z2ui5_cl_mime_app IMPLEMENTATION.
     ENDCASE.
 
   ENDMETHOD.
-
 ENDCLASS.

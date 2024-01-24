@@ -42,7 +42,7 @@ CLASS Z2UI5_CL_MIME_TEST_JSON IMPLEMENTATION.
 
   METHOD z2ui5_if_mime_container~get_metadata.
 
-    result = VALUE #( format = `data:image/png;base64` ).
+    result = VALUE #( format = `JSON` ).
 
   ENDMETHOD.
 ENDCLASS.
