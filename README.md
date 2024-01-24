@@ -3,6 +3,7 @@ This is not a mime repository! For testing only! <br>
 
 TODO:
 * ABAP for Cloud readiness
+* Edit Functionality (UPDATE)
 
 ### How-to-use:
 Use the interface:
