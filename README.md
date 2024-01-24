@@ -1,4 +1,4 @@
-# a2UI5 - cloud mime fake dummy
+# a2UI5 - Cloud MIME Fake Dummy
 This is not a mime repository! For testing only! <br>
 
 TODO:
@@ -56,3 +56,5 @@ And store your file as a comment in the method "container":
 Read your file as it is done in the sample app: <br>
 <img width="1200" alt="image" src="https://github.com/oblomov-dev/a2UI5_cloud_mime_fake/assets/102328295/cdd2a42a-a40a-4c01-b3de-64f1299c2f40">
 # Demo
+![mime_faker](https://github.com/oblomov-dev/a2UI5_cloud_mime_fake/assets/102328295/2a30f523-9c2b-46be-89d1-516836ba7e2b)
+
