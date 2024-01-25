@@ -27,7 +27,7 @@ CLASS z2ui5_cl_mime_app IMPLEMENTATION.
     IF check_initialized = abap_false.
       check_initialized = abap_true.
 
-      mt_type_help = VALUE #( FOR row IN z2ui5_cl_util_func=>get_file_types( ) ( n = to_upper( shift_right( shift_left( row ) ) )  v = shift_right( shift_left( row ) ) ) ).
+      mt_type_help = VALUE #( FOR row IN z2ui5_cl_util_func=>source_get_file_types( ) ( n = to_upper( shift_right( shift_left( row ) ) )  v = shift_right( shift_left( row ) ) ) ).
       mt_class_help = VALUE #( FOR row IN z2ui5_cl_util_func=>rtti_get_classes_impl_intf( |Z2UI5_IF_MIME_CONTAINER| ) ( n = row v = row ) ).
       classname = VALUE #( mt_class_help[ 1 ]-n OPTIONAL ).
 
@@ -102,7 +102,7 @@ CLASS z2ui5_cl_mime_app IMPLEMENTATION.
 
       WHEN 'ON_LOAD'.
 
-        DATA(lt_source) = z2ui5_cl_util_func=>source_code_get_method(
+        DATA(lt_source) = z2ui5_cl_util_func=>source_get_method(
           iv_classname  = classname
           iv_methodname = methodname ).
 
