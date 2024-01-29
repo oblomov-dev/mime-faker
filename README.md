@@ -1,4 +1,4 @@
-# a2UI5 - Cloud MIME Fake Dummy
+# a2UI5 - MIME Fake for Cloud
 This is not a mime repository! For testing only! <br>
 
 TODO:
