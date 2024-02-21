@@ -1,16 +1,13 @@
 # a2UI5 - MIME Faker
 No MIME Repository exists in ABAP Cloud. This solution helps to store files on the ABAP Stack and serves an "ABAP Standard" and "ABAP for Cloud" compatible solution. Of course this is not a real MIME Repository!
 
-### Information
-
-
-### Approaches
+#### Approaches
 1. Store files as comments in an ABAP method <br>
 2. Store files in a custom table <br>
 3. ...? <br>
 
 
-### Approach I
+## Approach I
 Use the interface:
 ```abap
 INTERFACE z2ui5_if_mime_container
@@ -64,4 +61,4 @@ Read your file as it is done in the sample app: <br>
 #### Demo
 ![mime_faker](https://github.com/oblomov-dev/a2UI5_cloud_mime_fake/assets/102328295/2a30f523-9c2b-46be-89d1-516836ba7e2b)
 
-### Approach II
+## Approach II
