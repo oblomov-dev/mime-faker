@@ -38,7 +38,7 @@ CLASS z2ui5_file_cl_db_api DEFINITION
 
     CLASS-METHODS get_editor_type
       RETURNING
-        VALUE(r_result) TYPE z2ui5_if_client=>ty_t_name_value.
+        VALUE(r_result) TYPE z2ui5_if_types=>ty_t_name_value.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -51,7 +51,7 @@ CLASS Z2UI5_FILE_CL_DB_API IMPLEMENTATION.
 
   METHOD create.
 
-    val-id = z2ui5_cl_util_func=>uuid_get_c32( ).
+    val-id = z2ui5_cl_util=>uuid_get_c32( ).
     val-file_size = strlen( val-data ).
     MODIFY z2ui5_file_t_001 FROM @( val ).
 
