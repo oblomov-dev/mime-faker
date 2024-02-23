@@ -29,8 +29,8 @@ CLASS Z2UI5_FILE_CL_APP_03 IMPLEMENTATION.
       ms_file = z2ui5_file_cl_db_api=>read( ms_file-id ).
 
       DATA(lv_data3) =  ms_file-data.
-      DATA(lv_data2) = z2ui5_cl_util_func=>conv_decode_x_base64( lv_data3 ).
-      ms_file-data = z2ui5_cl_util_func=>conv_get_string_by_xstring( lv_data2 ).
+      DATA(lv_data2) = z2ui5_cl_util=>conv_decode_x_base64( lv_data3 ).
+      ms_file-data = z2ui5_cl_util=>conv_get_string_by_xstring( lv_data2 ).
 
       mv_path = '../../demo/text'.
       mv_type = 'plain_text'.
@@ -41,8 +41,8 @@ CLASS Z2UI5_FILE_CL_APP_03 IMPLEMENTATION.
       WHEN 'DB_SAVE'.
 
         DATA(ls_db) = ms_file.
-        DATA(lv_readyx) = z2ui5_cl_util_func=>conv_get_xstring_by_string( ls_db-data ).
-        ls_db-data = z2ui5_cl_util_func=>conv_encode_x_base64( lv_readyx ).
+        DATA(lv_readyx) = z2ui5_cl_util=>conv_get_xstring_by_string( ls_db-data ).
+        ls_db-data = z2ui5_cl_util=>conv_encode_x_base64( lv_readyx ).
 
         z2ui5_file_cl_db_api=>update_data( ls_db ).
         commit work and wait.
@@ -57,7 +57,7 @@ CLASS Z2UI5_FILE_CL_APP_03 IMPLEMENTATION.
         RETURN.
     ENDCASE.
 
-    DATA(view) = z2ui5_cl_xml_view=>factory( client ).
+    DATA(view) = z2ui5_cl_xml_view=>factory( ).
     DATA(page) = view->shell( )->page(
     title = 'abap2UI5 - File Editor'
     navbuttonpress = client->_event( 'BACK' )

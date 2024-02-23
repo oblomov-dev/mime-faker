@@ -135,8 +135,8 @@ CLASS z2ui5_file_cl_app_02 IMPLEMENTATION.
 
           WHEN 'POPUP_DATA'.
             lv_data3 = z2ui5_file_cl_db_api=>read( id = ms_file-id )-data.
-            DATA(lv_data2) = z2ui5_cl_util_func=>conv_decode_x_base64( lv_data3 ).
-            lv_data3 = z2ui5_cl_util_func=>conv_get_string_by_xstring( lv_data2 ).
+            DATA(lv_data2) = z2ui5_cl_util=>conv_decode_x_base64( lv_data3 ).
+            lv_data3 = z2ui5_cl_util=>conv_get_string_by_xstring( lv_data2 ).
             ui5_popup_data_display( lv_data3 ).
 
           WHEN 'BACK'.
@@ -155,7 +155,7 @@ CLASS z2ui5_file_cl_app_02 IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD ui5_popup_data_display.
-    DATA(lo_popup) = z2ui5_cl_xml_view=>factory_popup( client ).
+    DATA(lo_popup) = z2ui5_cl_xml_view=>factory_popup( ).
     lo_popup->dialog( stretch = abap_true
                       title   = 'Data:'
         )->content(
@@ -174,7 +174,7 @@ CLASS z2ui5_file_cl_app_02 IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD ui5_popup_metadata_display.
-    DATA(popup) = z2ui5_cl_xml_view=>factory_popup( client )->dialog( contentheight = '500px'
+    DATA(popup) = z2ui5_cl_xml_view=>factory_popup(  )->dialog( contentheight = '500px'
                                                                       contentwidth  = '500px'
                                                                       title         = 'Edit Metadata'
        )->content(
@@ -207,7 +207,7 @@ CLASS z2ui5_file_cl_app_02 IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD ui5_view_main_display.
-    DATA(view) = z2ui5_cl_xml_view=>factory( client ).
+    DATA(view) = z2ui5_cl_xml_view=>factory( ).
     DATA(page) = view->shell( )->page( title          = 'abap2UI5 - Upload & Download Files'
                                        navbuttonpress = client->_event( 'BACK' )
                                        shownavbutton  = abap_true
