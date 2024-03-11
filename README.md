@@ -1,4 +1,4 @@
-# a2UI5 - MIME Faker
+# MIME Faker
 No MIME Repository exists in ABAP Cloud. This solution helps to store files on the ABAP Stack and serves an "ABAP Standard" and "ABAP for Cloud" compatible solution. Of course this is not a real MIME Repository!
 
 #### Approaches
