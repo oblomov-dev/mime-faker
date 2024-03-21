@@ -5,7 +5,7 @@
    <VSEOCLASS>
     <CLSNAME>Z2UI5_FILE_CL_DB_API</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>tool - db file api</DESCRIPT>
+    <DESCRIPT>mime - db mime api</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

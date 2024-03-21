@@ -12,7 +12,6 @@ CLASS z2ui5_file_cl_app_00 DEFINITION
 ENDCLASS.
 
 
-
 CLASS z2ui5_file_cl_app_00 IMPLEMENTATION.
 
 
@@ -23,7 +22,7 @@ CLASS z2ui5_file_cl_app_00 IMPLEMENTATION.
       DATA(view) = z2ui5_cl_xml_view=>factory( ).
 
       DATA(page) = view->shell( )->page(
-              title          = 'abap2UI5 - File Loader'
+              title          = 'abap2UI5 - MIME Faker'
               navbuttonpress = client->_event( 'BACK' )
               shownavbutton  = abap_true ).
 
@@ -44,26 +43,10 @@ CLASS z2ui5_file_cl_app_00 IMPLEMENTATION.
         )->image_content( src = 'sap-icon://upload' ).
 
       page->generic_tile(
-         class     = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
-         header    = `Upload MIME File`
-         subheader    = `on-premise only`
-         press     = client->_event( `z2ui5_file_cl_app_01` )
-      )->get( )->tile_content(
-        )->image_content( src = 'sap-icon://upload' ).
-
-      page->generic_tile(
         class = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
-        header    = `Edit & Download MIME File`
-        subheader    = `on-premise only`
-         press     = client->_event( `z2ui5_xlsx_cl_app_02` )
-      )->get( )->tile_content(
-         )->image_content( src = 'sap-icon://download' ).
-
-      page->generic_tile(
-        class = 'sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout'
-        header    = `Interface Editor`
+        header    = `Method Content Display`
         subheader    = `Cloud & On-Premise`
-         press     = client->_event( `z2ui5_xlsx_cl_app_05` )
+         press     = client->_event( `z2ui5_file_cl_app_03` )
       )->get( )->tile_content(
          )->image_content( src = 'sap-icon://download' ).
 

@@ -50,7 +50,10 @@ CLASS z2ui5_file_cl_app_02 DEFINITION PUBLIC.
 ENDCLASS.
 
 
-CLASS z2ui5_file_cl_app_02 IMPLEMENTATION.
+
+CLASS Z2UI5_FILE_CL_APP_02 IMPLEMENTATION.
+
+
   METHOD ui5_delete.
     z2ui5_file_cl_db_api=>delete( ms_file-id ).
     COMMIT WORK AND WAIT.
@@ -59,9 +62,11 @@ CLASS z2ui5_file_cl_app_02 IMPLEMENTATION.
                                  text = `File deleted successfully` ).
   ENDMETHOD.
 
+
   METHOD ui5_load.
     mt_out = CORRESPONDING #( z2ui5_file_cl_db_api=>read_all( ) ).
   ENDMETHOD.
+
 
   METHOD ui5_on_event.
     TRY.
@@ -150,9 +155,11 @@ CLASS z2ui5_file_cl_app_02 IMPLEMENTATION.
     ENDTRY.
   ENDMETHOD.
 
+
   METHOD ui5_on_init.
     ui5_view_init_display( ).
   ENDMETHOD.
+
 
   METHOD ui5_popup_data_display.
     DATA(lo_popup) = z2ui5_cl_xml_view=>factory_popup( ).
@@ -172,6 +179,7 @@ CLASS z2ui5_file_cl_app_02 IMPLEMENTATION.
 
     client->popup_display( lo_popup->stringify( ) ).
   ENDMETHOD.
+
 
   METHOD ui5_popup_metadata_display.
     DATA(popup) = z2ui5_cl_xml_view=>factory_popup(  )->dialog( contentheight = '500px'
@@ -197,6 +205,7 @@ CLASS z2ui5_file_cl_app_02 IMPLEMENTATION.
     client->popup_display( popup->stringify( ) ).
   ENDMETHOD.
 
+
   METHOD ui5_view_init_display.
     ui5_view_main_display( ).
 *    client->view_display( z2ui5_cl_xml_view=>factory( client
@@ -205,6 +214,7 @@ CLASS z2ui5_file_cl_app_02 IMPLEMENTATION.
 *         )->_generic( ns = `html` name = `script` )->_cc_plain_xml( z2ui5_cl_cc_file_uploader=>get_js( )
 *         )->stringify( ) ).
   ENDMETHOD.
+
 
   METHOD ui5_view_main_display.
     DATA(view) = z2ui5_cl_xml_view=>factory( ).
@@ -286,6 +296,7 @@ CLASS z2ui5_file_cl_app_02 IMPLEMENTATION.
 
     client->view_display( view->stringify( ) ).
   ENDMETHOD.
+
 
   METHOD z2ui5_if_app~main.
     me->client = client.

@@ -5,7 +5,7 @@
    <VSEOCLASS>
     <CLSNAME>Z2UI5_FILE_CL_APP_02</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>file - ztab download/upload</DESCRIPT>
+    <DESCRIPT>mime - ztab download/upload</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

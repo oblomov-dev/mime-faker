@@ -1,16 +1,18 @@
-CLASS z2ui5_file_cl_app_03 DEFINITION PUBLIC.
+CLASS z2ui5_file_cl_app_03 DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
 
   PUBLIC SECTION.
-
     INTERFACES z2ui5_if_app.
 
-    DATA ms_file TYPE z2ui5_file_cl_db_api=>ty_s_file.
-
-    DATA mv_type TYPE string.
-    DATA mv_path TYPE string.
-    DATA mv_editor TYPE string.
-    DATA mv_check_editable TYPE abap_bool.
     DATA check_initialized TYPE abap_bool.
+    DATA classname TYPE string VALUE `zcl_mime_cloud_test`.
+    DATA type TYPE string VALUE `javascript`.
+    DATA methodname TYPE string VALUE 'z2ui5_if_mime_container~container'.
+    DATA file TYPE string.
+    DATA mt_type_help TYPE z2ui5_if_types=>ty_t_name_value.
+    DATA mt_class_help TYPE z2ui5_if_types=>ty_t_name_value.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -18,87 +20,101 @@ ENDCLASS.
 
 
 
-CLASS Z2UI5_FILE_CL_APP_03 IMPLEMENTATION.
-
+CLASS z2ui5_file_cl_app_03 IMPLEMENTATION.
 
   METHOD z2ui5_if_app~main.
 
     IF check_initialized = abap_false.
       check_initialized = abap_true.
 
-      ms_file = z2ui5_file_cl_db_api=>read( ms_file-id ).
+      mt_type_help = VALUE #( FOR row IN z2ui5_cl_util_api=>source_get_file_types( ) ( n = to_upper( shift_right( shift_left( row ) ) )  v = shift_right( shift_left( row ) ) ) ).
+      mt_class_help = VALUE #( FOR row2 IN z2ui5_cl_util_stmpncfctn=>rtti_get_classes_impl_intf( |Z2UI5_IF_MIME_CONTAINER| ) ( n = row2-classname v = row2-description ) ).
+      classname = VALUE #( mt_class_help[ 1 ]-n OPTIONAL ).
 
-      DATA(lv_data3) =  ms_file-data.
-      DATA(lv_data2) = z2ui5_cl_util=>conv_decode_x_base64( lv_data3 ).
-      ms_file-data = z2ui5_cl_util=>conv_get_string_by_xstring( lv_data2 ).
+      DATA(view) = z2ui5_cl_xml_view=>factory( ).
+      DATA(cont) = view->shell(
+            )->page(
+                    title          = 'abap2UI5 - Cloud MIME Fake'
+                    navbuttonpress = client->_event( val = 'BACK' )
+                    shownavbutton  = abap_true
+                )->header_content(
+                    )->link(
+                        text = 'Repository on GitHub'
+                        href = `https://github.com/oblomov-dev/a2UI5_cloud_mime_fake`
+                        target = '_blank'
+                )->get_parent(
+                )->simple_form( editable = abap_true
+                    )->content( 'form' ).
+*                        )->title( 'Classname'
+      DATA(input2) = cont->label( 'Classname'
+      )->input(
+            value = client->_bind_edit( classname )
+            width = `30%`
+              suggestionrows  = client->_bind( mt_class_help )
+       showsuggestion  = abap_true
+            )->get( ).
 
-      mv_path = '../../demo/text'.
-      mv_type = 'plain_text'.
+      input2->suggestion_columns(
+*        )->Column(  )->label( text = 'Name' )->get_parent(
+ )->column(  )->label( text = 'Value' ).
+
+      input2->suggestion_rows(
+          )->column_list_item(
+              )->label( text = '{V}' ).
+
+      cont->label( `Methodname` )->input(
+            value = methodname
+            enabled = abap_false  width = `30%`
+      )->label( `Source Code`
+      )->link(
+              text = 'Show...'
+              href = |{ client->get( )-s_config-origin }/sap/bc/adt/oo/classes/{ client->_bind_edit( classname ) }/source/main|
+              target = '_blank'
+      )->label( `Type` ).
+      DATA(input) = cont->input( value =  client->_bind_edit( type )  width = `20%`
+               suggestionrows  = client->_bind( mt_type_help )
+       showsuggestion  = abap_true
+       )->get( ).
+
+      input->suggestion_columns(
+*        )->Column(  )->label( text = 'Name' )->get_parent(
+        )->column(  )->label( text = 'Value' ).
+
+      input->suggestion_rows(
+          )->column_list_item(
+*            )->label( text = '{N}'
+              )->label( text = '{V}' ).
+
+      cont->label(
+                 )->button(
+                     text  = 'load...'
+                     press = client->_event( val = 'ON_LOAD' )  width = `10%`
+       )->get_parent( )->get_parent(
+       )->code_editor(
+         type  =  client->_bind_edit( type )
+         value = client->_bind_edit( file ) editable = abap_false
+       ).
+
+      client->view_display( cont->stringify( ) ).
     ENDIF.
 
     CASE client->get( )-event.
 
-      WHEN 'DB_SAVE'.
+      WHEN 'ON_LOAD'.
 
-        DATA(ls_db) = ms_file.
-        DATA(lv_readyx) = z2ui5_cl_util=>conv_get_xstring_by_string( ls_db-data ).
-        ls_db-data = z2ui5_cl_util=>conv_encode_x_base64( lv_readyx ).
+        file = z2ui5_cl_util_api=>source_get_method(
+          iv_classname  = classname
+          iv_methodname = methodname ).
 
-        z2ui5_file_cl_db_api=>update_data( ls_db ).
-        commit work and wait.
-        client->message_box_display( text = 'File changed sucessfully!' type = 'success' ).
+*        file = z2ui5_cl_util_api=>source_method_to_file( lt_source ).
 
-      WHEN 'EDIT'.
-        mv_check_editable = xsdbool( mv_check_editable = abap_false ).
-      WHEN 'CLEAR'.
-        mv_editor = ``.
+        client->view_model_update( ).
+        client->message_toast_display( |File loaded| ).
+
       WHEN 'BACK'.
-        client->nav_app_leave( client->get_app( client->get( )-s_draft-id_prev_app_stack ) ).
-        RETURN.
+        client->nav_app_leave( client->get_app( client->get( )-s_draft-id_prev_app_stack  ) ).
+
     ENDCASE.
-
-    DATA(view) = z2ui5_cl_xml_view=>factory( ).
-    DATA(page) = view->shell( )->page(
-    title = 'abap2UI5 - File Editor'
-    navbuttonpress = client->_event( 'BACK' )
-    shownavbutton = abap_true
-            )->header_content(
-*                )->link( text = 'Demo'        target = '_blank' href = 'https://twitter.com/abap2UI5/status/1631562906570575875'
-*                )->link( text = 'Source_Code' target = '_blank' href = view->hlp_get_source_code_url(  )
-        )->get_parent( ).
-
-    DATA(grid) = page->grid( 'L7 M12 S12' )->content( 'layout' ).
-
-    grid->simple_form( title = 'File' editable = abap_true )->content( 'form'
-         )->label( 'Format'
-*         )->input( client->_bind( ms_file-name )
-          )->input(
-                value           = client->_bind_edit( mv_type )
-                suggestionitems = client->_bind_local( z2ui5_file_cl_db_api=>get_editor_type( ) ) )->get(
-            )->suggestion_items(
-                )->list_item( text = '{N}' additionaltext = '{V}'
-                 )->get_parent( )->get_parent(
-*         )->label( 'Description'
-*         )->input( client->_bind( ms_file-descr )
-        ).
-
-*    grid = page->grid( 'L12 M12 S12' )->content( 'layout' ).
-
-*    grid->simple_form( 'Editor' )->content( 'form'
-        page->code_editor(
-                    type  = mv_type
-*                    editable = mv_check_editable
-                    value = client->_bind_edit( ms_file-data ) ).
-
-    page->footer( )->overflow_toolbar(
-        )->toolbar_spacer(
-        )->button(
-            text  = 'Save'
-            press = client->_event( 'DB_SAVE' )
-            type  = 'Emphasized'
-            icon = 'sap-icon://upload-to-cloud' ).
-
-    client->view_display( view->stringify( ) ).
 
   ENDMETHOD.
 ENDCLASS.
