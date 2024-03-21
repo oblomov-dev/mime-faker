@@ -62,3 +62,4 @@ Read your file as it is done in the sample app: <br>
 ![mime_faker](https://github.com/oblomov-dev/a2UI5_cloud_mime_fake/assets/102328295/2a30f523-9c2b-46be-89d1-516836ba7e2b)
 
 ## Approach II
+Store Files in a z-table. No tranportation as a development object possible.
